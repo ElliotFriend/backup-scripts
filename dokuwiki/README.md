@@ -8,9 +8,6 @@ to our VM-level backups.
 This script is run from a server that is remote from the server running
 dokuwiki. Adjust your script accordingly, if that's not the case for you.
 
-This script was adapted from the dokuwiki wiki:
-https://www.dokuwiki.org/tips:backup_script#an_rsync_alternative
-
 In the end you get:
 * A daily rsync of the dokuwiki installation (minus any files in the
   exclude list) that is retained for 15 days. Note that the use of Rsync
@@ -18,3 +15,10 @@ In the end you get:
   of all differences on the following days. Effectively, though, it seems
   like a backup of each day.
 * A monthly archive of the dokuwiki installation
+
+This script was adapted from the dokuwiki wiki:
+https://www.dokuwiki.org/tips:backup_script#an_rsync_alternative
+
+This work is licensed under the Creative Commons Attribution Share-Alike
+3.0 Unported License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-sa/3.0/
