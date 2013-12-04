@@ -1,0 +1,23 @@
+# Example crontab that I use to run each of these scripts
+# m h  dom mon dow   command
+#
+### backup the evergreen database ###
+# The library closes most nights at 11:00pm, so I chose half-an-hour
+# past to make the 23:00 backup as complete as possible, and to account
+# for anyone working late.
+# I swear I once had a reason to use 37 rather 30...
+37 * * * *	/root/scripts/evergreen/db_dump.sh
+
+# move yesterday's backups to a separate directory
+# and remove all backups from last week, except the last one of the day.
+15 00 * * *	/root/scripts/evergreen/archive.sh
+
+# compress archive directory from last month. Do this on the tenth to make
+# sure that 'archive.sh' has cleared out all of last month's backups,
+# except for one 23:00 backup from each day.
+20 00 10 * *	/root/scripts/evergreen/compress.sh
+
+# compress archive directory from last year (just a bunch of
+# month archives). Run this on the eleventh, so that 'compress.sh' has
+# already worked it's magic on December's archive directory.
+45 00 11 1 *	/root/scripts/evergreen/store.sh
