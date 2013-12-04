@@ -1,0 +1,4 @@
+# m h dom m dow cmd
+
+# Backup a remote dokuwiki installation early every morning
+1 1 * * * /root/scripts/backup/dokuwiki/dokuwiki-rsync-backup.sh
