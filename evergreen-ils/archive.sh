@@ -43,7 +43,7 @@ fi
 ## copy the last dbdump to our off-site backup destination
 echo "Trying to backup the most recent db dump offsite; to Los Angeles, son!!" >> $MESSAGE
 tar -zcvf /tmp/evergreen_${YESTERDAY_FULL}.tar.gz /backup/evergreen_${YESTERDAY_FULL}_23.backup
-scp /tmp/evergreen_${YESTERDAY_FULL}.tar.gz remoteuser@example.com:evergreen/
+scp /tmp/evergreen_${YESTERDAY_FULL}.tar.gz remoteuser@example.com:evergreen/${YESTERDAY_YEAR}/
 if [ "$?" -eq "0" ]; then
     echo "Offsite backup successful; rest easy." >> $MESSAGE
 else
