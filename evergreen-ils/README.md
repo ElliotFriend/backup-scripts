@@ -29,3 +29,7 @@ A couple gotchas that you may need to address before you use these:
   due to poor backup strategy. My intention is to make sure that never
   happens again, at the cost of some extra hard-drive space and time to
   go through the backups once in a while.
+* I'm directing most of these backups to the /backup directory. For me,
+  that directory is an NFS mount on another server, in another part of
+  SLCC's campus. Adjust the mount-point/directory/destination to your
+  liking.
