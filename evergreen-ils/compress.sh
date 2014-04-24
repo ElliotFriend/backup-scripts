@@ -1,15 +1,13 @@
 #!/bin/bash
 
-## Delcare variables that we'll use to identify the proper directories to compress
-#MAILTO=cron@slcconline.edu
+source $(dirname $0)/var_file.sh
+
+# Delcare variables that we'll use to identify the proper directories to compress
+# We're keeping these here, because they're not needed by other scripts
 LAST_MONTH_FULL=$(date -d '1 month ago' +'%Y%m')
 LAST_MONTH_YEAR=$(date -d '1 month ago' +'%Y')
 LAST_MONTH_MONTH=$(date -d '1 month ago' +'%m')
-# Now, echo those back just to check
-#echo "Last month's full date was "$LAST_MONTH_FULL
-#echo "Last month's year was "$LAST_MONTH_YEAR
-#echo "Last month's month was "$LAST_MONTH_MONTH
 
-## Compress last month's archive directory
-tar -zcvf /backup/archive/$LAST_MONTH_YEAR/evergreen_${LAST_MONTH_MONTH}.tar.gz /backup/archive/$LAST_MONTH_YEAR/$LAST_MONTH_MONTH
-rm -rf /backup/archive/$LAST_MONTH_YEAR/$LAST_MONTH_MONTH
+# Compress last month's archive directory
+tar -zcvf ${BACKUP_DIR}/archive/${LAST_MONTH_YEAR}/evergreen_${LAST_MONTH_MONTH}.tar.gz ${BACKUP_DIR}/archive/${LAST_MONTH_YEAR}/${LAST_MONTH_MONTH}
+rm -rf ${BACKUP_DIR}/archive/${LAST_MONTH_YEAR}/${LAST_MONTH_MONTH}

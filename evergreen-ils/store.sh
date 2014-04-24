@@ -1,48 +1,47 @@
 #!/bin/bash
 
-SUBJECT="Evergreen Cron Alert"
-TO="yourname@example.com"
-FROM="evergreen@example.com"
-MESSAGE="/tmp/store-message.txt"
+source $(dirname $0)/var_file.sh
 
 # On January 11, archive last year's directory of archives
+# We're keeping this here, because it's not needed by other scripts
 LAST_YEAR=$(date -d '1 year ago' +'%Y')
 
 # Put some information at the top of the email message
-echo "Evergreen Yearly Storage Archive" >> $MESSAGE
-echo "TIME: `date`" >> $MESSAGE
+echo 'Evergreen Yearly Storage Archive' >> ${MESSAGE}
+echo "TIME: `date`" >> ${MESSAGE}
 
 # Check to make sure that last year's directory actually exists
-if [ -d /backup/archive/$LAST_YEAR ]; then
-    echo "Last year's directory exists. Continuing..." >> $MESSAGE
+if [ -d ${BACKUP_DIR}/archive/${LAST_YEAR} ]; then
+    echo 'Directory for last year exists. Continuing with backup.' >> ${MESSAGE}
 
     # Store the name of all files in a temp file
-    FILES="/tmp/files.txt"
-    ls /backup/archive/$LAST_YEAR > $FILES
+    FILES='/tmp/files.txt'
+    ls ${BACKUP_DIR}/archive/${LAST_YEAR} > ${FILES}
 
     # Check to make sure that only evergreen_XX.tar.gz files exist
-    if grep -v --quiet 'evergreen_[0-1][0-9].tar.gz' $FILES; then
-        echo "Unexpected files found in /backup/archive/$LAST_YEAR/. No action taken." >> $MESSAGE
+    if grep -v --quiet 'evergreen_[0-1][0-9].tar.gz' ${FILES}; then
+        echo "Unexpected files found in ${BACKUP_DIR}/archive/${LAST_YEAR}/. No action taken." >> ${MESSAGE}
     else
-        echo "Expected files found in /backup/archive/$LAST_YEAR/. Continuing..." >> $MESSAGE
+        echo "Expected files found in ${BACKUP_DIR}/archive/${LAST_YEAR}/. Continuing with backup." >> ${MESSAGE}
         # create a tar.gz file, containing all of the individual monthly backups
-        tar -zcvf /backup/archive/evergreen_${LAST_YEAR}.tar.gz /backup/archive/$LAST_YEAR 2>&1 >> $MESSAGE
+        tar -zcvf ${BACKUP_DIR}/archive/evergreen_${LAST_YEAR}.tar.gz ${BACKUP_DIR}/archive/${LAST_YEAR} 2>&1 >> ${MESSAGE}
         # remove the unarchived directory
-        rm -rf /backup/archive/${LAST_YEAR}
+        rm -rf ${BACKUP_DIR}/archive/${LAST_YEAR}
     fi
 else
-    # Directory does not exist, somebody make a decision
-    echo "Last year's directory does not exist. No action taken." >> $MESSAGE
+    # Directory does not exist, there's nothing to backup
+    echo 'Directory for last year does not exist. No action taken.' >> ${MESSAGE}
 fi
 
-#cat $MESSAGE
-# Send an email with all of the logging for this
-/usr/sbin/sendmail "$TO" <<EOF
-subject:$SUBJECT
-from:$FROM
-`cat $MESSAGE`
+# Send an email with all of the information from this script
+# 'sendmail' may not be available in your distribution,
+# or may be in a different location. Edit accordingly.
+/usr/sbin/sendmail "${TO}" <<EOF
+subject:${SUBJECT}
+from:${FROM}
+`cat ${MESSAGE}`
 EOF
 
 # Clean up our temporary files
-rm $FILES
-rm $MESSAGE
+rm ${FILES}
+rm ${MESSAGE}
