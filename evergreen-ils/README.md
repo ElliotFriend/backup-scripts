@@ -14,12 +14,12 @@ I'm sure this isn't the most elegant solution in the world, but it seems
 to be working pretty well for me. I sleep well knowing that I have these
 scripts running on my server.
 
-A couple gotchas that you may need to address before you use these:
+:information_source: A couple gotchas that you may need to address before you use these:
 * These scripts focus heavily on Evergreen's database. I'm not currently
   too concerned with scripting the backups for file customizations, and
   the like. We've got a pretty good VM backup solution in place, so I've
   not focused much on OS-level stuff.
-* If you run these scripts according to the 'example.crontab' file, you'll
+* If you run these scripts according to the 'crontab.example' file, you'll
   end up with an awful lot of backups. If backup space is at a premium
   for you, look into that.
 * These scripts don't do much deduplication, removing old backups, or
@@ -28,8 +28,7 @@ A couple gotchas that you may need to address before you use these:
   backups of the database. We lost our entire electronic catalog once,
   due to poor backup strategy. My intention is to make sure that never
   happens again, at the cost of some extra hard-drive space and time to
-  go through the backups once in a while.
-* I'm directing most of these backups to the `/backup` directory. For me,
-  that directory is an NFS mount on another server, in another part of
-  SLCC's campus. Adjust the mount-point/directory/destination to your
-  liking.
+  weed through the backups once in a while.
+* I direct these backups to the `/backup` directory. For me,
+  that directory is an NFS share on another server, in another part of
+  SLCC's campus. Adjust the `$BACKUP_DIR` variable to your liking.
